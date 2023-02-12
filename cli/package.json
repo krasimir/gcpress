@@ -1,0 +1,10 @@
+{
+  "name": "gcpress",
+  "version": "0.0.1",
+  "description": "A CMS based on GCP",
+  "main": "index.js",
+  "scripts": {
+  },
+  "author": "Krasimir Tsonev",
+  "license": "MIT"
+}
