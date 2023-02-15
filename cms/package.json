@@ -20,7 +20,7 @@
     "esbuild": "0.14.28",
     "express": "4.17.1",
     "firebase": "9.9.1",
-    "firebase-admin": "11.0.1",
+    "firebase-admin": "^11.5.0",
     "html-minifier": "4.0.0",
     "imagemin": "7.0.1",
     "imagemin-jpegtran": "7.0.0",

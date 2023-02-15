@@ -7,9 +7,9 @@ const cssbun = require('cssbun')
 const chokidar = require("chokidar");
 
 const inputCSS = `${__dirname}/../src/css/index.css`;
-const outputCSS = `${__dirname}/../../public/gcpress.css`;
+const outputCSS = `${__dirname}/../public/gcpress.css`;
 const inputJS = `${__dirname}/../src/js/index.js`;
-const outputJS = `${__dirname}/../../public/gcpress.js`;
+const outputJS = `${__dirname}/../public/gcpress.js`;
 
 const exitCallbacks = [];
 const ROOT = process.cwd();
