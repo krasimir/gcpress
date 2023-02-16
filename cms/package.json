@@ -4,8 +4,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "node ./gcpress/dev.js",
-    "build": "node ./gcpress/build.js"
+    "dev": "node ./deploy/dev.js",
+    "build": "node ./deploy/build.js"
   },
   "author": "Krasimir Tsonev",
   "dependencies": {

@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const { compileCSS, compileJS } = require('./utils');
-const PKG_FILE = __dirname + '/../package.json';
+const PKG_FILE = __dirname + '/../../../package.json';
 
 const pkg = require(PKG_FILE);
 const version = pkg.version.split('.').map(n => Number(n));
