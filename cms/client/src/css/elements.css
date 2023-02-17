@@ -1,0 +1,17 @@
+.logo {
+  float: left;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-right: 1em;
+  margin-left: 1.2em;
+}
+.ant-layout {
+  background: none;
+}
+.ant-layout .ant-layout-header {
+  padding: 0;
+  background: none;
+}
+.ant-spin {
+  display: block;
+}

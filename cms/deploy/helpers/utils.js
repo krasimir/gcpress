@@ -8,7 +8,7 @@ const chokidar = require("chokidar");
 
 const inputCSS = `${__dirname}/../../client/src/css/index.css`;
 const outputCSS = `${__dirname}/../../client/public/gcpress.css`;
-const inputJS = `${__dirname}/../../client/src/js/index.js`;
+const inputJS = `${__dirname}/../../client/src/js/index.jsx`;
 const outputJS = `${__dirname}/../../client/public/gcpress.js`;
 
 const exitCallbacks = [];

@@ -30,5 +30,11 @@
     "memory-cache": "0.2.0",
     "moment": "2.29.1",
     "node-fetch": "2"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "5.0.1",
+    "antd": "5.2.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }
