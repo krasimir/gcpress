@@ -13,8 +13,11 @@ body {
   box-sizing: border-box;
 }
 .p1 { padding: 1em !important; }
+.px1 { padding-left: 1em !important; padding-right: 1em !important; }
 .pt1 { padding-top: 1em !important; }
+.mx1 { margin-left: 1em !important; margin-right: 1em !important; }
 .mt1 { margin-top: 1em !important; }
+.mt2 { margin-top: 2em !important; }
 .mt3 { margin-top: 3em !important; }
 .mb1 { margin-bottom: 1em !important; }
 .my3 { margin-top: 3em !important; margin-bottom: 3em !important; }

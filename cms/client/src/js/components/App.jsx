@@ -40,7 +40,7 @@ const App = () => {
   return (
     <Layout>
       <Header className="header">
-        <div class="logo">{APP_NAME}</div>
+        <div class="logo mx1">{APP_NAME}</div>
         {state === READY && <Menu theme="light" mode="horizontal" defaultSelectedKeys={['defaultPage']} items={[
           { key: 'models', label: 'Models' },
           { key: 'content', label: 'Content' }
