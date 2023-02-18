@@ -1,4 +1,4 @@
 export const APP_NAME = 'GCPress';
 export const THEME_COLORS = { 
-  colorPrimary: '#FF0051'
+  colorPrimary: '#6519c9'
 }

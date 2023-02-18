@@ -8,8 +8,8 @@ const app = express();
 
 app.use(express.static(__dirname + '/../client/public', { maxAge: 604800000 })); // one week
 
-app.use(`/${ADMIN_ROUTE}/api/models`, admin.models);
-app.use(`/${ADMIN_ROUTE}/api/content`, admin.content);
+app.use(`/${ADMIN_ROUTE}/api/models`, admin.models());
+app.use(`/${ADMIN_ROUTE}/api/content`, admin.content());
 app.get(`/${ADMIN_ROUTE}`, admin.ui);
 app.get('/', home);
 

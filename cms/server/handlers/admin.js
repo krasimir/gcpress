@@ -1,6 +1,6 @@
-const { ADMIN_ROUTE } = require('../config');
+const { ADMIN_ROUTE, MODELS_COLLECTION, CONTENT_COLLECTION } = require('../config');
 
-const { db } = require('../helpers/admin');
+const { getAll } = require('./helpers/gcp');
 
 function ui(req, res) {
   res.setHeader('Content-Type', 'text/html');
@@ -14,7 +14,7 @@ function ui(req, res) {
         <link href="/gcpress.css" rel="stylesheet">
       </head>
       <body>
-        <div id="root"></div>
+        <div id="root" class="max1000 mxauto"></div>
         <script>
           window.API = '/${ADMIN_ROUTE}/api/';
         </script>
@@ -24,14 +24,29 @@ function ui(req, res) {
   `);
 }
 
-function models(req, res) {
-
-  res.json({});
+function handleCollectionRequests(collection) {
+  return async function(req, res) {
+    if (req.method === 'GET') {
+      try {
+        const models = await getAll(collection);
+        res.json(models);
+        return;
+      } catch(error) {
+        console.log(error);
+        res.status(500);
+        res.json({ error: 'Error getting data' });
+        return;
+      }
+    }
+    res.status(400);
+    res.json({ error: 'Unsupported method' });
+  }
 }
-
+function models() {
+  return handleCollectionRequests(MODELS_COLLECTION);
+}
 function content(req, res) {
-
-  res.json({});
+  return handleCollectionRequests(CONTENT_COLLECTION);
 }
 
 module.exports = {

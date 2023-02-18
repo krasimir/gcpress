@@ -15,3 +15,6 @@
 .ant-spin {
   display: block;
 }
+.ant-layout-content {
+  border-top: dotted 1px #999;
+}

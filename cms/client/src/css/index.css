@@ -14,8 +14,13 @@ body {
 }
 .p1 { padding: 1em !important; }
 .pt1 { padding-top: 1em !important; }
+.mt1 { margin-top: 1em !important; }
 .mt3 { margin-top: 3em !important; }
+.mb1 { margin-bottom: 1em !important; }
+.my3 { margin-top: 3em !important; margin-bottom: 3em !important; }
 .ta { text-align: center; }
 .block { display: block; }
 .max300 { max-width: 300px; }
+.max200 { max-width: 200px; }
+.max1000 { max-width: 1000px; }
 .mxauto { margin-left: auto; margin-right: auto; }

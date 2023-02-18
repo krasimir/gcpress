@@ -3,17 +3,22 @@ import { Layout, Menu, Spin } from 'antd';
 
 import { APP_NAME } from '../config';
 import { Data } from '../data';
+import Models from './Models';
 
-const { Header } = Layout;
+const { Header, Content } = Layout;
 
 const LOADING = 'LOADING';
+const NO_MODELS = 'NO_MODELS';
+const READY = 'READY';
 
 const App = () => {
   const [ state, setState ] = useState(LOADING);
 
   useEffect(() => {
-    Data.ensureData().then(() => {
-      console.log('got it');
+    Data.getData().then(() => {
+      if (Data.models().length === 0) {
+        setState(NO_MODELS);
+      }
     });
   }, []);
 
@@ -25,18 +30,24 @@ const App = () => {
       </div>
     )
   }
+
+  let content = '';
+
+  if (state === NO_MODELS) {
+    content = <Models />;
+  }
   
   return (
     <Layout>
       <Header className="header">
         <div class="logo">{APP_NAME}</div>
-        <Menu theme="light" mode="horizontal" defaultSelectedKeys={['defaultPage']} items={[
+        {state === READY && <Menu theme="light" mode="horizontal" defaultSelectedKeys={['defaultPage']} items={[
           { key: 'models', label: 'Models' },
           { key: 'content', label: 'Content' }
-        ]} />
+        ]} />}
       </Header>
       <Layout>
-        
+        <Content>{content}</Content>
       </Layout>
     </Layout>
   );

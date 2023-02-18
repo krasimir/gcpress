@@ -3,15 +3,23 @@ export const Data = (() => {
   let models = null;
   
   return {
-    async ensureData() {
-      if (!content) {
-        const res = await fetch(window.API + 'content');
-        content = await res.json();
-      }
-      if (!models) {
-        const res = await fetch(window.API + 'models');
-        models = await res.json();
-      } 
+    async getData() {
+      return Promise.all([
+        (async () => {
+          const res = await fetch(window.API + 'content');
+          content = await res.json();
+        })(),
+        (async () => {
+          const res = await fetch(window.API + 'models');
+          models = await res.json();
+        })()
+      ])
+    },
+    content() {
+      return content;
+    },
+    models() {
+      return models;
     }
   }
 })();
