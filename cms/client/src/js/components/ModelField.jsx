@@ -5,7 +5,7 @@ import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { formatId } from './utils';
 import { FIELD_TYPES } from '../config';
 
-const DEFAULT_TYPE = FIELD_TYPES.ONE_OF_MANY;
+const DEFAULT_TYPE = FIELD_TYPES.TEXT;
 
 const { Text } = Typography;
 
@@ -40,7 +40,8 @@ export default function ModelField({ onCancel, onSave }) {
     <Form
       labelCol={{ span: 6 }}
       wrapperCol={{ span: 18 }}
-      style={{ marginTop: '2em' }}>
+      style={{ marginTop: '2em' }}
+      onFinish={() => console.log('finish')}>
       <Form.Item
         label="Name"
         name="name"
@@ -103,14 +104,14 @@ export default function ModelField({ onCancel, onSave }) {
 
       <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
         <Space direction='horizontal' size='small'>
-          <Button type="primary" htmlType="submit" disabled={!enableSave}
+          <Button type="primary" disabled={!enableSave}
             onClick={() => {
               const result = Object.assign({
                 name,
                 id,
                 type,
               }, hasOptions && { options })
-              onSave(result)
+              onSave(result);
             }}>
             Save
           </Button>

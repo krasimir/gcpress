@@ -1,14 +1,28 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { Button, Breadcrumb, Form, Input, Checkbox, Typography, Space, Modal } from 'antd';
+import { Button, Card, Form, Input, Descriptions, Typography, Space, Modal } from 'antd';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import ModelField from './ModelField';
 import { formatId } from './utils';
 
 const { Title, Text } = Typography;
 
-function fieldsReducer(state, action) {
-  console.log(state, action);
-  return state;
+function fieldsReducer(fields, { field, what }) {
+  if (what === 'SAVE') {
+    if (fields.find(f => f.id === field.id)) {
+      fields = fields.map(f => {
+        if (f.id === field.id) {
+          return field;
+        }
+        return f;
+      });
+    } else {
+      fields = [...fields, field];
+    }
+  } else if (what === 'DELETE') {
+    fields = fields.filter(f => f.id !== field.id);
+  }
+  return fields;
 }
 
 export default function Models() {
@@ -46,8 +60,26 @@ export default function Models() {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
-        <Space direction='vertical' size={'middle'}>
-          {fields.length === 0 && <Text>You have no fields yet. Please add one.</Text>}
+        <Space direction='vertical' size={'middle'} style={{ width: '100%' }}>
+          { fields.length === 0 && <Text>You have no fields yet. Please add one.</Text> }
+          { fields.map(field => {
+              return (
+                <Card title={field.name} style={{minWidth: '100%'}} size="small" extra={
+                  <Space direction='horizontal'>
+                    <Button icon={<EditOutlined />} type="text" onClick={() => {
+                      
+                    }} />
+                    <Button icon={<DeleteOutlined />} type="text" onClick={() => {
+                      fieldsDispatch({ field, what: 'DELETE' });
+                    }} />
+                  </Space>}>
+                  <Descriptions>
+                    <Descriptions.Item label="ID">{field.id}</Descriptions.Item>
+                    <Descriptions.Item label="Type">{field.type}</Descriptions.Item>
+                  </Descriptions>
+                </Card>
+              )
+            })}
           <Button onClick={() => setFieldModalVisibility(true)}>New field</Button>
         </Space>
       </Form.Item>
@@ -56,7 +88,7 @@ export default function Models() {
         fields.length > 0 && 
         <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            Save model
           </Button>
         </Form.Item>
       }
@@ -69,7 +101,7 @@ export default function Models() {
           key={uid()}
           onCancel={() => setFieldModalVisibility(false)}
           onSave={(field) => {
-            fieldsDispatch(field);
+            fieldsDispatch({ field, what: 'SAVE' });
             setFieldModalVisibility(false);
           }}/>
       </Modal>
