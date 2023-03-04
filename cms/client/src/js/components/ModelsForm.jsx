@@ -4,10 +4,12 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import ModelField from './ModelField';
 import { formatId } from './utils';
+import {useAreYouSure} from './utils/AreYouSure';
 
 const { Title, Text } = Typography;
 
 function fieldsReducer(fields, { field, what }) {
+  console.log(what);
   if (what === 'SAVE') {
     if (fields.find(f => f.id === field.id)) {
       fields = fields.map(f => {
@@ -29,6 +31,7 @@ export default function Models() {
   const [ id, setId ] = useState('');
   const [ fields, fieldsDispatch ] = useReducer(fieldsReducer, []);
   const [ isFieldModalOpen, setFieldModalVisibility ] = useState(true);
+  const { AreYouSureUI, areYouSure } = useAreYouSure();
 
   return (
     <Form
@@ -70,7 +73,10 @@ export default function Models() {
                       
                     }} />
                     <Button icon={<DeleteOutlined />} type="text" onClick={() => {
-                      fieldsDispatch({ field, what: 'DELETE' });
+                      areYouSure(
+                        () => fieldsDispatch({ field, what: 'DELETE' }),
+                        'You are about to delete a field. Are you sure?'
+                      );
                     }} />
                   </Space>}>
                   <Descriptions>
@@ -105,6 +111,7 @@ export default function Models() {
             setFieldModalVisibility(false);
           }}/>
       </Modal>
+      {AreYouSureUI}
     </Form>
   )
 }
