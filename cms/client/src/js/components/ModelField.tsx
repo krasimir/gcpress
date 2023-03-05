@@ -3,7 +3,7 @@ import { Button, Breadcrumb, Form, Input, Checkbox, Typography, Space, Select } 
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import { formatId } from './utils';
-import { FIELD_TYPES } from '../config';
+import { Field, FIELD_TYPES } from '../@types/types.d';
 
 const DEFAULT_TYPE = FIELD_TYPES.TEXT;
 
@@ -18,7 +18,14 @@ function optionsReducer(state, action) {
   return state;
 }
 
-export default function ModelField({ onCancel, onSave, field }) {
+type ModelField = {
+  key: string | number,
+  onCancel: Function,
+  onSave: Function,
+  field: Field
+}
+
+export default function ModelField({ onCancel, onSave, field, key }: ModelField) {
   const [ name, setName ] = useState(field.name || '');
   const [ id, setId ] = useState(field.id || '');
   const [ type, setType ] = useState(field.type || DEFAULT_TYPE);

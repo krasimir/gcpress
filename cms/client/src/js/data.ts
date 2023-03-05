@@ -1,3 +1,5 @@
+import { Model } from "./@types/types.d";
+
 export const Data = (() => {
   let content = null;
   let models = null;
@@ -14,6 +16,9 @@ export const Data = (() => {
           models = await res.json();
         })()
       ])
+    },
+    async saveModel(model: Model) {
+      console.log(model.id);
     },
     content() {
       return content;

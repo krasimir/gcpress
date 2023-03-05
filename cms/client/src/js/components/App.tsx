@@ -24,14 +24,14 @@ const App = () => {
 
   if (state === LOADING) {
     return (
-      <div class="max300 mxauto ta p1 mt3">
+      <div className="max300 mxauto ta p1 mt3">
         <Spin />
-        <small class="block pt1">Loading. Please wait.</small>
+        <small className="block pt1">Loading. Please wait.</small>
       </div>
     )
   }
 
-  let content = '';
+  let content = <span></span>;
 
   if (state === NO_MODELS) {
     content = <Models />;
@@ -40,7 +40,7 @@ const App = () => {
   return (
     <Layout>
       <Header className="header">
-        <div class="logo mx1">{APP_NAME}</div>
+        <div className="logo mx1">{APP_NAME}</div>
         {state === READY && <Menu theme="light" mode="horizontal" defaultSelectedKeys={['defaultPage']} items={[
           { key: 'models', label: 'Models' },
           { key: 'content', label: 'Content' }

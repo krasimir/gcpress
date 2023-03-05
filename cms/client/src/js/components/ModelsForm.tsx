@@ -5,11 +5,11 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import ModelField, { formatFieldType } from './ModelField';
 import { formatId } from './utils';
 import { useAreYouSure } from './utils/AreYouSure';
+import { Field, Model } from '../@types/types.d'
 
 const { Title, Text } = Typography;
 
 function fieldsReducer(fields, { field, what }) {
-  console.log(what);
   if (what === 'SAVE') {
     if (fields.find(f => f.id === field.id)) {
       fields = fields.map(f => {
@@ -27,10 +27,15 @@ function fieldsReducer(fields, { field, what }) {
   return fields;
 }
 
-export default function ModelsForm({ model }) {
+type ModelsFormProps = {
+  model: Model,
+  onSave: (model: Model) => void
+}
+
+export default function ModelsForm({ model, onSave }: ModelsFormProps) {
   const [ id, setId ] = useState(model.id || '');
   const [ name, setName ] = useState(model.name || '');
-  const [ fields, fieldsDispatch ] = useReducer(fieldsReducer, model.fields || []);
+  const [ fields, fieldsDispatch ] = useReducer<Field[]>(fieldsReducer, model.fields || []);
   const [ currentField, setCurrentField ] = useState(null);
   const { AreYouSureUI, areYouSure } = useAreYouSure();
 
@@ -42,7 +47,7 @@ export default function ModelsForm({ model }) {
       style={{ maxWidth: 600, margin: '0 auto' }}
       initialValues={{}}
       onFinish={() => {
-        console.log(name, id, fields);
+        onSave({ name, id, fields });
       }}
       onFinishFailed={() => {}}
       autoComplete="off"

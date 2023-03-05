@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "typeRoots": ["src/js/@types", "node_modules/@types"],
+    "target": "es6",
+    "jsx": "preserve",
+    "moduleResolution": "node"
+  } 
+}
