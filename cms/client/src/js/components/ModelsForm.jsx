@@ -2,9 +2,9 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { Button, Card, Form, Input, Descriptions, Typography, Space, Modal } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
-import ModelField from './ModelField';
+import ModelField, { formatFieldType } from './ModelField';
 import { formatId } from './utils';
-import {useAreYouSure} from './utils/AreYouSure';
+import { useAreYouSure } from './utils/AreYouSure';
 
 const { Title, Text } = Typography;
 
@@ -27,10 +27,11 @@ function fieldsReducer(fields, { field, what }) {
   return fields;
 }
 
-export default function Models() {
-  const [ id, setId ] = useState('');
-  const [ fields, fieldsDispatch ] = useReducer(fieldsReducer, []);
-  const [ isFieldModalOpen, setFieldModalVisibility ] = useState(true);
+export default function ModelsForm({ model }) {
+  const [ id, setId ] = useState(model.id || '');
+  const [ name, setName ] = useState(model.name || '');
+  const [ fields, fieldsDispatch ] = useReducer(fieldsReducer, model.fields || []);
+  const [ currentField, setCurrentField ] = useState(null);
   const { AreYouSureUI, areYouSure } = useAreYouSure();
 
   return (
@@ -40,8 +41,10 @@ export default function Models() {
       wrapperCol={{ span: 18 }}
       style={{ maxWidth: 600, margin: '0 auto' }}
       initialValues={{}}
-      onFinish={() => console.log('finish')}
-      onFinishFailed={() => console.log('finish failed')}
+      onFinish={() => {
+        console.log(name, id, fields);
+      }}
+      onFinishFailed={() => {}}
       autoComplete="off"
     >
       <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
@@ -53,8 +56,9 @@ export default function Models() {
         name="name"
         rules={[{ required: true, message: 'Please input the model\'s name!' }]}
       >
-        <Input onChange={e => {
+        <Input defaultValue={name} onChange={e => {
           setId(formatId(e.target.value));
+          setName(e.target.value);
         }} />
       </Form.Item>
 
@@ -70,7 +74,7 @@ export default function Models() {
                 <Card title={field.name} style={{minWidth: '100%'}} size="small" extra={
                   <Space direction='horizontal'>
                     <Button icon={<EditOutlined />} type="text" onClick={() => {
-                      
+                      setCurrentField(field)
                     }} />
                     <Button icon={<DeleteOutlined />} type="text" onClick={() => {
                       areYouSure(
@@ -81,34 +85,35 @@ export default function Models() {
                   </Space>}>
                   <Descriptions>
                     <Descriptions.Item label="ID">{field.id}</Descriptions.Item>
-                    <Descriptions.Item label="Type">{field.type}</Descriptions.Item>
+                    <Descriptions.Item label="Type">{formatFieldType(field.type)}</Descriptions.Item>
                   </Descriptions>
                 </Card>
               )
             })}
-          <Button onClick={() => setFieldModalVisibility(true)}>New field</Button>
+          <Button onClick={() => setCurrentField({})}>New field</Button>
         </Space>
       </Form.Item>
 
       {
-        fields.length > 0 && 
+        fields.length > 0 &&
         <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" disabled={ name === ''}>
             Save model
           </Button>
         </Form.Item>
       }
       <Modal
         title="Adding a field"
-        open={isFieldModalOpen}
+        open={!!currentField}
         footer={null}
         closable={false}>
         <ModelField
           key={uid()}
-          onCancel={() => setFieldModalVisibility(false)}
+          field={currentField}
+          onCancel={() => setCurrentField(null)}
           onSave={(field) => {
             fieldsDispatch({ field, what: 'SAVE' });
-            setFieldModalVisibility(false);
+            setCurrentField(false);
           }}/>
       </Modal>
       {AreYouSureUI}

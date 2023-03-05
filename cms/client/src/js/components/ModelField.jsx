@@ -18,11 +18,11 @@ function optionsReducer(state, action) {
   return state;
 }
 
-export default function ModelField({ onCancel, onSave }) {
-  const [ name, setName ] = useState('');
-  const [ id, setId ] = useState('');
-  const [ type, setType ] = useState(DEFAULT_TYPE);
-  const [ options, optionsDispatch ] = useReducer(optionsReducer, []);
+export default function ModelField({ onCancel, onSave, field }) {
+  const [ name, setName ] = useState(field.name || '');
+  const [ id, setId ] = useState(field.id || '');
+  const [ type, setType ] = useState(field.type || DEFAULT_TYPE);
+  const [ options, optionsDispatch ] = useReducer(optionsReducer, field.options || []);
   const [ fieldOptionValue, setFieldOptionValue ] = useState('');
 
   let hasOptions = type === FIELD_TYPES.ONE_OF_MANY || type === FIELD_TYPES.MANY_OF_MANY;
@@ -31,23 +31,23 @@ export default function ModelField({ onCancel, onSave }) {
   if (id === '') {
     enableSave = false;
   } else {
-    if (type === hasOptions) {
+    if (hasOptions) {
       enableSave = options.length > 0;
     }
-  }  
+  }
 
   return (
     <Form
       labelCol={{ span: 6 }}
       wrapperCol={{ span: 18 }}
       style={{ marginTop: '2em' }}
-      onFinish={() => console.log('finish')}>
+      onFinish={() => {}}>
       <Form.Item
         label="Name"
         name="name"
         rules={[{ required: true, message: 'Please input the field\'s name!' }]}
       >
-        <Input onChange={e => {
+        <Input defaultValue={name} disabled={!!field.name} onChange={e => {
           setName(e.target.value);
           setId(formatId(e.target.value));
         }} onPressEnter={(e) => e.preventDefault()}/>
@@ -59,7 +59,7 @@ export default function ModelField({ onCancel, onSave }) {
       
       <Form.Item label="Type">
         <Select
-          defaultValue={DEFAULT_TYPE}
+          defaultValue={type}
           onChange={(t) => setType(t)}
           options={
             Object.keys(FIELD_TYPES).map(key => {
@@ -124,7 +124,7 @@ export default function ModelField({ onCancel, onSave }) {
   )
 }
 
-function formatFieldType(type) {
+export function formatFieldType(type) {
   let str = type.toLowerCase().split('_').join(' ');
   return str.charAt(0).toUpperCase() + str.slice(1);
 }

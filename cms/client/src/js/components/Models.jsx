@@ -21,7 +21,7 @@ export default function Models() {
             Creating a new model
           </Breadcrumb.Item>
         </Breadcrumb>
-        <ModelsForm />
+        <ModelsForm model={{}}/>
       </div>
     );
   }
