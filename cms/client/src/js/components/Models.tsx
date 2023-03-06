@@ -3,10 +3,10 @@ import { Empty, Button, Breadcrumb } from 'antd';
 
 import { Data } from '../data';
 import ModelsForm from './ModelsForm';
+import { Model } from '../@types/types.d'
 
 enum UI {
   LIST = 'LIST',
-  LOADING = 'LOADING',
   NEW_MODEL = 'NEW_MODLE',
 }
 
@@ -16,7 +16,7 @@ const EMPTY = {
   fields: undefined
 }
 
-export default function Models() {
+export default function Models({ onSave }: { onSave: (model: Model) => void }) {
   const [ state, setState ] = useState<UI>(UI.LIST);
 
   if (state === UI.NEW_MODEL) {
@@ -30,18 +30,9 @@ export default function Models() {
             Creating a new model
           </Breadcrumb.Item>
         </Breadcrumb>
-        <ModelsForm model={EMPTY} onSave={(model) => {
-          setState(UI.LOADING)
-          Data.saveModel(model).then(() => {
-            setState(UI.LIST);
-          });
-        }}/>
+        <ModelsForm model={EMPTY} onSave={onSave}/>
       </div>
     );
-  }
-
-  if (state === UI.LOADING) {
-    return 
   }
 
   if (Data.models().length === 0) {

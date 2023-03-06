@@ -6,6 +6,7 @@ const home = require('./handlers/home');
 
 const app = express();
 
+app.use(express.json());
 app.use(express.static(__dirname + '/../client/public', { maxAge: 604800000 })); // one week
 
 app.use(`/${ADMIN_ROUTE}/api/models`, admin.models());

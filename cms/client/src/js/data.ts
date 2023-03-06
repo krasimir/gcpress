@@ -18,7 +18,14 @@ export const Data = (() => {
       ])
     },
     async saveModel(model: Model) {
-      console.log(model.id);
+      const request = await fetch(window.API + 'models', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(model)
+      });
+      models = await request.json();
     },
     content() {
       return content;

@@ -45,10 +45,17 @@ async function getAll(collection) {
   }
   return await query();
 }
+async function save(collection, data) {
+  const doc = db.collection(collection).doc(data.id);
+  await doc.set({
+    ...data
+  });
+}
 
 module.exports = {
   admin,
   db,
   bucket,
-  getAll
+  getAll,
+  save
 };

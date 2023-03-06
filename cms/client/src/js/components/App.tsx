@@ -7,22 +7,26 @@ import Models from './Models';
 
 const { Header, Content } = Layout;
 
-const LOADING = 'LOADING';
-const NO_MODELS = 'NO_MODELS';
-const READY = 'READY';
+enum UI {
+  LOADING = 'LOADING',
+  READY = 'READY',
+}
+enum MAIN_NAV {
+  MODELS = 'models',
+  CONTENT = 'content'
+}
 
 const App = () => {
-  const [ state, setState ] = useState(LOADING);
+  const [ state, setState ] = useState(UI.LOADING);
+  const [ mainNav, setMainNav ] = useState(MAIN_NAV.MODELS);
 
   useEffect(() => {
     Data.getData().then(() => {
-      if (Data.models().length === 0) {
-        setState(NO_MODELS);
-      }
+      setState(UI.READY);
     });
   }, []);
 
-  if (state === LOADING) {
+  if (state === UI.LOADING) {
     return (
       <div className="max300 mxauto ta p1 mt3">
         <Spin />
@@ -31,20 +35,29 @@ const App = () => {
     )
   }
 
-  let content = <span></span>;
+  let content;
 
-  if (state === NO_MODELS) {
-    content = <Models />;
+  if (Data.models().length === 0) {
+    content = <Models onSave={(model) => {
+      setState(UI.LOADING);
+      Data.saveModel(model).then(() => {
+        setState(UI.READY);
+      });
+    }}/>;
+  } else {
+    content = <span>list</span>;
   }
   
   return (
     <Layout>
       <Header className="header">
         <div className="logo mx1">{APP_NAME}</div>
-        {state === READY && <Menu theme="light" mode="horizontal" defaultSelectedKeys={['defaultPage']} items={[
-          { key: 'models', label: 'Models' },
-          { key: 'content', label: 'Content' }
-        ]} />}
+        {Data.models().length > 0 &&
+          <Menu theme="light" mode="horizontal" defaultSelectedKeys={[ mainNav ]} items={[
+            { key: MAIN_NAV.MODELS, label: 'Models' },
+            { key: MAIN_NAV.CONTENT, label: 'Content' }
+          ]} />
+        }
       </Header>
       <Layout>
         <Content>{content}</Content>
