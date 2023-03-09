@@ -4,8 +4,9 @@ import { Layout, Menu, Spin } from 'antd';
 import { APP_NAME } from '../config';
 import { Data } from '../data';
 import Models from './Models';
+import Content from './Content';
 
-const { Header, Content } = Layout;
+const { Header, Content: AntdContent } = Layout;
 
 enum UI {
   LOADING = 'LOADING',
@@ -18,7 +19,7 @@ enum MAIN_NAV {
 
 const App = () => {
   const [ state, setState ] = useState(UI.LOADING);
-  const [ mainNav, setMainNav ] = useState(MAIN_NAV.MODELS);
+  const [ mainNav, setMainNav ] = useState(MAIN_NAV.CONTENT);
 
   useEffect(() => {
     Data.getData().then(() => {
@@ -54,6 +55,10 @@ const App = () => {
         }}
       />
     );
+  } else if (mainNav === MAIN_NAV.CONTENT) {
+    content = (
+      <Content />
+    )
   }
   
   return (
@@ -61,14 +66,18 @@ const App = () => {
       <Header className="header">
         <div className="logo mx1">{APP_NAME}</div>
         {Data.models().length > 0 &&
-          <Menu theme="light" mode="horizontal" defaultSelectedKeys={[ mainNav ]} items={[
-            { key: MAIN_NAV.MODELS, label: 'Models' },
-            { key: MAIN_NAV.CONTENT, label: 'Content' }
-          ]} />
+          <Menu
+            theme="light"
+            mode="horizontal"
+            defaultSelectedKeys={[ mainNav ]} items={[
+              { key: MAIN_NAV.CONTENT, label: 'Content' },
+              { key: MAIN_NAV.MODELS, label: 'Models' }
+            ]}
+            onSelect={({ key }) => setMainNav(key)} />
         }
       </Header>
       <Layout>
-        <Content>{content}</Content>
+        <AntdContent>{content}</AntdContent>
       </Layout>
     </Layout>
   );

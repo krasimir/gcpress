@@ -31,6 +31,7 @@ export default function ModelField({ onCancel, onSave, field, key }: ModelField)
   const [ type, setType ] = useState(field.type || DEFAULT_TYPE);
   const [ options, optionsDispatch ] = useReducer(optionsReducer, field.options || []);
   const [ fieldOptionValue, setFieldOptionValue ] = useState('');
+  const editing = !!field.name;
 
   let hasOptions = type === FIELD_TYPES.ONE_OF_MANY || type === FIELD_TYPES.MANY_OF_MANY;
 
@@ -49,14 +50,12 @@ export default function ModelField({ onCancel, onSave, field, key }: ModelField)
       wrapperCol={{ span: 18 }}
       style={{ marginTop: '2em' }}
       onFinish={() => {}}>
-      <Form.Item
-        label="Name"
-        name="name"
-        rules={[{ required: true, message: 'Please input the field\'s name!' }]}
-      >
-        <Input defaultValue={name} disabled={!!field.name} onChange={e => {
+      <Form.Item label="Name" name="name">
+        <Input defaultValue={name} onChange={e => {
           setName(e.target.value);
-          setId(formatId(e.target.value));
+          if (!editing) {
+            setId(formatId(e.target.value));
+          }
         }} onPressEnter={(e) => e.preventDefault()}/>
       </Form.Item>
 
@@ -66,6 +65,7 @@ export default function ModelField({ onCancel, onSave, field, key }: ModelField)
       
       <Form.Item label="Type">
         <Select
+          disabled={editing}
           defaultValue={type}
           onChange={(t) => setType(t)}
           options={

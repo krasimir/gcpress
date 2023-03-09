@@ -20,6 +20,7 @@ body {
 .mt2 { margin-top: 2em !important; }
 .mt3 { margin-top: 3em !important; }
 .mb1 { margin-bottom: 1em !important; }
+.my1 { margin-top: 1em !important; margin-bottom: 1em !important; }
 .my2 { margin-top: 2em !important; margin-bottom: 2em !important; }
 .my3 { margin-top: 3em !important; margin-bottom: 3em !important; }
 .ta { text-align: center; }

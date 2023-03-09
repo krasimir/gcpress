@@ -40,7 +40,7 @@ export const Data = (() => {
     content() {
       return content;
     },
-    models() {
+    models(): Model[] {
       return models;
     }
   }

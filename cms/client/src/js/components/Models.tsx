@@ -9,7 +9,8 @@ import { useAreYouSure } from './utils/AreYouSure';
 
 enum UI {
   LIST = 'LIST',
-  NEW_MODEL = 'NEW_MODLE',
+  NEW_MODEL = 'NEW_MODEL',
+  EDIT_MODEL = 'EDIT_MODEL',
 }
 
 const EMPTY = {
@@ -24,8 +25,8 @@ export default function Models({ onSave, onDelete }: {
 }) {
   const [ state, setState ] = useState<UI>(UI.LIST);
   const { AreYouSureUI, areYouSure } = useAreYouSure();
+  const [ currentModel, setCurrentModel ] = useState<Model>(EMPTY)
   
-
   if (state === UI.NEW_MODEL) {
     return (
       <div className="mt1 px1">
@@ -37,7 +38,23 @@ export default function Models({ onSave, onDelete }: {
             Creating a new model
           </Breadcrumb.Item>
         </Breadcrumb>
-        <ModelsForm model={EMPTY} onSave={onSave}/>
+        <ModelsForm model={currentModel} onSave={onSave} editing={false} />
+      </div>
+    );
+  }
+
+  if (state === UI.EDIT_MODEL) {
+    return (
+      <div className="mt1 px1">
+        <Breadcrumb>
+          <Breadcrumb.Item>
+            <a href="javascript:void(0);" onClick={() => setState(UI.LIST)}>All models</a>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            Editing a model
+          </Breadcrumb.Item>
+        </Breadcrumb>
+        <ModelsForm model={currentModel} onSave={onSave} editing />
       </div>
     );
   }
@@ -56,7 +73,7 @@ export default function Models({ onSave, onDelete }: {
   return (
     <>
       <List
-        className='mt1'
+        className='my1'
         size="large"
         bordered
         dataSource={Data.models()}
@@ -67,7 +84,8 @@ export default function Models({ onSave, onDelete }: {
               <Col span={6}>
                 <Space direction='horizontal' className="right">
                   <Button icon={<EditOutlined />} type="text" onClick={() => {
-                    
+                    setCurrentModel(item);
+                    setState(UI.EDIT_MODEL);
                   }} />
                   <Button icon={<DeleteOutlined />} type="text" onClick={() => {
                     areYouSure(
@@ -82,6 +100,7 @@ export default function Models({ onSave, onDelete }: {
         )}
       />
       {AreYouSureUI}
+      <Button type="primary" onClick={() => setState(UI.NEW_MODEL)}>Add new model</Button>
     </>
   );
 }

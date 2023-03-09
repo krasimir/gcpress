@@ -29,10 +29,11 @@ function fieldsReducer(fields, { field, what }) {
 
 type ModelsFormProps = {
   model: Model,
-  onSave: (model: Model) => void
+  onSave: (model: Model) => void,
+  editing: boolean
 }
 
-export default function ModelsForm({ model, onSave }: ModelsFormProps) {
+export default function ModelsForm({ model, onSave, editing }: ModelsFormProps) {
   const [ id, setId ] = useState(model.id || '');
   const [ name, setName ] = useState(model.name || '');
   const [ fields, fieldsDispatch ] = useReducer<Field[]>(fieldsReducer, model.fields || []);
@@ -53,16 +54,14 @@ export default function ModelsForm({ model, onSave }: ModelsFormProps) {
       autoComplete="off"
     >
       <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
-        <Title>New model</Title>
+        <Title>{editing ? `Model: ${name}` : 'New model'}</Title>
       </Form.Item>
 
-      <Form.Item
-        label="Name"
-        name="name"
-        rules={[{ required: true, message: 'Please input the model\'s name!' }]}
-      >
+      <Form.Item label="Name" name="name">
         <Input defaultValue={name} onChange={e => {
-          setId(formatId(e.target.value));
+          if (!editing) {
+            setId(formatId(e.target.value));
+          }
           setName(e.target.value);
         }} />
       </Form.Item>
