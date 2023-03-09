@@ -51,11 +51,21 @@ async function save(collection, data) {
     ...data
   });
 }
+async function del(collection, data) {
+  const doc = db.collection(collection).doc(data.id);
+  const res = await doc.get();
+  if (res.exists) {
+    await doc.delete();
+  } else {
+    throw new Error('The record doesn\'t exist. So, it can\'t be deleted.');
+  }
+}
 
 module.exports = {
   admin,
   db,
   bucket,
   getAll,
-  save
+  save,
+  del
 };

@@ -72,7 +72,7 @@ export default function ModelsForm({ model, onSave }: ModelsFormProps) {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
-        <Space direction='vertical' size={'middle'} style={{ width: '100%' }}>
+        <Space direction='vertical' size={'middle'} className="w100p">
           { fields.length === 0 && <Text>You have no fields yet. Please add one.</Text> }
           { fields.map(field => {
               return (

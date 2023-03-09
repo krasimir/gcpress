@@ -27,6 +27,16 @@ export const Data = (() => {
       });
       models = await request.json();
     },
+    async deleteModel(model: Model) {
+      const request = await fetch(window.API + 'models', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(model)
+      });
+      models = await request.json();
+    },
     content() {
       return content;
     },

@@ -35,17 +35,25 @@ const App = () => {
     )
   }
 
-  let content;
+  let content = <p>content</p>;
 
-  if (Data.models().length === 0) {
-    content = <Models onSave={(model) => {
-      setState(UI.LOADING);
-      Data.saveModel(model).then(() => {
-        setState(UI.READY);
-      });
-    }}/>;
-  } else {
-    content = <span>list</span>;
+  if (Data.models().length === 0 || mainNav === MAIN_NAV.MODELS) {
+    content = (
+      <Models
+        onSave={(model) => {
+          setState(UI.LOADING);
+          Data.saveModel(model).then(() => {
+            setState(UI.READY);
+          });
+        }}
+        onDelete={(model) => {
+          setState(UI.LOADING);
+          Data.deleteModel(model).then(() => {
+            setState(UI.READY);
+          });
+        }}
+      />
+    );
   }
   
   return (

@@ -1,6 +1,6 @@
 const { ADMIN_ROUTE, MODELS_COLLECTION, CONTENT_COLLECTION } = require('../config');
 
-const { getAll, save } = require('./helpers/gcp');
+const { getAll, save, del } = require('./helpers/gcp');
 
 function ui(req, res) {
   res.setHeader('Content-Type', 'text/html');
@@ -41,13 +41,28 @@ function handleCollectionRequests(collection) {
         const update = req.body;
         if (!update || !update.id) {
           res.status(400);
-          return res.json({ error: 'Wrong update data' });
+          return res.json({ error: 'Wrong data.' });
         }
         await save(collection, update);
         const models = await getAll(collection);
         return res.json(models);
       } catch(err) {
         console.log(error);
+        res.status(500);
+        return res.json({ error: 'Error saving data' });
+      }
+    } else if (req.method === 'DELETE') {
+      try {
+        const data = req.body;
+        if (!data || !data.id) {
+          res.status(400);
+          return res.json({ error: 'Wrong data.' });
+        }
+        await del(collection, data);
+        const models = await getAll(collection);
+        return res.json(models);
+      } catch(err) {
+        console.log(err);
         res.status(500);
         return res.json({ error: 'Error saving data' });
       }
